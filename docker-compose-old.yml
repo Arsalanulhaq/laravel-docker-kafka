@@ -1,0 +1,34 @@
+version: '3.4'
+
+services:
+  php-fpm:
+    build:
+      context: .
+      target: products_php
+    volumes:
+      - .:/var/www/application
+    ports:
+      - "9003:9000"
+
+  nginx:
+    build:
+      context: .
+      target: products_nginx
+    depends_on:
+      - php-fpm
+    ports:
+      - "83:80"
+
+  mysql:
+    image: mariadb:10.6
+    container_name: products_mysql
+    tty: true
+    ports:
+      - 3309:3306
+    environment:
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: dbpass
+      MYSQL_ROOT_PASSWORD: rootdbpass
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql

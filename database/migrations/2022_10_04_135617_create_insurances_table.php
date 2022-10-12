@@ -15,15 +15,17 @@ return new class extends Migration
     {
         Schema::create('insurances', function (Blueprint $table) {
             $table->id();
-            $table->integer('member_id')->unsigned();
-            $table->foreign('member_id')
-                ->references('id')->on('members')
-                ->onDelete('cascade');
-
-            $table->integer('card_id')->unsigned();
-            $table->foreign('card_id')
-                ->references('id')->on('card_details')
-                ->onDelete('cascade');
+            // $table->unsignedBigInteger('member_id');
+            $table->unsignedBigInteger('member_id')->index()->nullable();
+            // $table->foreign('member_id')
+            //     ->references('id')->on('members')
+            //     ->onDelete('cascade');
+            
+            $table->unsignedBigInteger('card_id')->index()->nullable();           
+            // $table->unsignedBigInteger('card_id');
+            // $table->foreign('card_id')
+            //     ->references('id')->on('card_details')
+            //     ->onDelete('cascade');
             $table->timestamps();
         });
     }
