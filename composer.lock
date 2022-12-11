@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ccbd816a07b206f971042295b899d1ba",
+    "content-hash": "993cadf1e8fb72494aa6c4a0202a4af3",
     "packages": [
         {
             "name": "brick/math",
@@ -432,6 +432,72 @@
                 }
             ],
             "time": "2022-06-18T20:57:19+00:00"
+        },
+        {
+            "name": "ensi/laravel-phprdkafka",
+            "version": "0.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ensi-platform/laravel-php-rdkafka.git",
+                "reference": "6fd1388957f427ee89641a60080fc6e4f525bb4e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ensi-platform/laravel-php-rdkafka/zipball/6fd1388957f427ee89641a60080fc6e4f525bb4e",
+                "reference": "6fd1388957f427ee89641a60080fc6e4f525bb4e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-rdkafka": "^5.0 || ^6.0",
+                "illuminate/contracts": "^8 || ^9",
+                "php": "^7.3 || ^8.0"
+            },
+            "require-dev": {
+                "brianium/paratest": "^6.2",
+                "nunomaduro/collision": "^5.3",
+                "orchestra/testbench": "^6.15",
+                "phpunit/phpunit": "^9.3",
+                "spatie/laravel-ray": "^1.9",
+                "vimeo/psalm": "^4.4"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Ensi\\LaravelPhpRdKafka\\LaravelPhpRdKafkaServiceProvider"
+                    ],
+                    "aliases": {
+                        "Kafka": "Ensi\\LaravelPhpRdKafka\\KafkaFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Ensi\\LaravelPhpRdKafka\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "arrilot",
+                    "email": "nekrasov@greensight.ru",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Bridge package between Laravel and php-rdkafka",
+            "homepage": "https://github.com/ensi-platform/laravel-phprdkafka",
+            "keywords": [
+                "ensi",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/ensi-platform/laravel-php-rdkafka/issues",
+                "source": "https://github.com/ensi-platform/laravel-php-rdkafka/tree/0.2.2"
+            },
+            "time": "2022-02-16T18:01:46+00:00"
         },
         {
             "name": "fruitcake/php-cors",
@@ -7818,5 +7884,5 @@
         "php": "^8.0.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.3.0"
 }

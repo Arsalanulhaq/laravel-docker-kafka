@@ -1,35 +1,24 @@
-# Global settings
-ARG PHP_VERSION=8.1
-ARG NGINX_VERSION=1.17
-#ARG ALPINE_VERSION=3.13
+FROM php:8.1.6-fpm-alpine3.15 AS products_php
 
-# FROM php:${PHP_VERSION}-fpm-alpine AS products_php
-FROM thecodingmachine/php:8.1-v4-fpm AS products_php
+# Get installer script
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
+# Install php exts
+RUN install-php-extensions gd pdo_mysql zip redis rdkafka pcntl
+# Install deps & composer
+RUN apk add --no-cache \ 
+    unzip \ 
+    shadow \ 
+    nodejs \
+    npm \
+    nano && curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php && php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Create user & group so docker doesn't run as root
+WORKDIR /var/www/html
+RUN groupadd -g 1000 dev && useradd -u 1000 -g dev arsalan
+# Change ownership to new user
+COPY --chown=arsalan:dev . /var/www/html
+# Run as new user
+USER arsalan
 
-# https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
-ENV COMPOSER_ALLOW_SUPERUSER=1
-ENV PATH="${PATH}:/root/.composer/vendor/bin"
-
-# build for production
-ARG APP_ENV=production
-
-WORKDIR /var/www/application
-
-# copy everything, excluding the one from .dockerignore file
-COPY . ./
-#RUN set -eux; \
-RUN mkdir -p storage/logs storage/framework bootstrap/cache; \
-    composer install --prefer-dist --no-progress --no-suggest --optimize-autoloader; \
-    composer clear-cache
-
-EXPOSE 8080
-
-# NGINX
-# FROM nginx:${NGINX_VERSION}-alpine AS products_nginx
-
-# WORKDIR /var/www/application
-
-# COPY docker/nginx/conf.d/default.conf /etc/nginx/conf.d/
-# COPY --from=products_php /var/www/application/public public/
+# RUN composer install && composer require ensi/laravel-phprdkafka
+# RUN php artisan vendor:publish --provider="Ensi\LaravelPhpRdKafka\LaravelPhpRdKafkaServiceProvider" --tag="kafka-config"
